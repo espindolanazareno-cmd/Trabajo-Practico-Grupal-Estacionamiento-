@@ -15,9 +15,16 @@
   </header>
 
   <main class="grid-container">
-    <!-- Tótem de Entrada -->
+    <!-- Tótem de Entrada y Barrera -->
     <section class="card">
       <h2>Tótem de Entrada (Ingreso)</h2>
+      
+      <!-- Barrera Física Visual -->
+      <div class="barrera-container">
+        <div class="postede-barrera"></div>
+        <div id="brazo-barrera" class="brazo-barrera"></div>
+      </div>
+
       <form id="form-ingreso">
         <label>Patente / Dominio:</label>
         <input type="text" id="patente" placeholder="AA123CD" required>
@@ -40,7 +47,7 @@
       <div id="mapa-cocheras" class="cocheras-grid"></div>
     </section>
 
-    <!-- Caja / Salida -->
+    <!-- Caja y Salida -->
     <section class="card">
       <h2>Caja y Salida</h2>
       <form id="form-salida">
