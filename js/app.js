@@ -2,7 +2,7 @@ const TOTAL_COCHERAS = 10;
 const TARIFAS = { Moto: 100, Auto: 350, Camioneta: 500, Bus: 600 };
 let vehículosEstacionados = [];
 
-// Audio Bip Sintetizado
+// Sonido Bip
 function emitirBip(frecuencia = 800, duracion = 0.15) {
   try {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -19,10 +19,11 @@ function emitirBip(frecuencia = 800, duracion = 0.15) {
     osc.start();
     osc.stop(audioCtx.currentTime + duracion);
   } catch (e) {
-    console.log("Audio bloqueado");
+    console.log("Audio bloqueado o no soportado");
   }
 }
 
+// Control visual de la barrera
 function accionarBarrera() {
   const barrera = document.getElementById('brazo-barrera');
   emitirBip(800, 0.1);
@@ -36,66 +37,47 @@ function accionarBarrera() {
   }, 3500);
 }
 
-// Renderizar el Diagrama de Cocheras 2D
-function renderizarPlano2D() {
-  const zonaA = document.getElementById('zona-a');
-  const zonaB = document.getElementById('zona-b');
+// Renderizar Mapa Original y actualizar cupos
+function renderizarCocheras() {
+  const contenedor = document.getElementById('mapa-cocheras');
   const libresEl = document.getElementById('cupos-libres');
   
-  zonaA.innerHTML = '';
-  zonaB.innerHTML = '';
+  if (!contenedor) return;
+  contenedor.innerHTML = '';
 
   for (let i = 1; i <= TOTAL_COCHERAS; i++) {
     const vehiculo = vehículosEstacionados.find(v => v.posicion === i);
     const div = document.createElement('div');
-    div.className = `cochera-2d ${vehiculo ? 'ocupada' : 'libre'}`;
-
-    let icono = '🚗';
-    if (vehiculo) {
-      if (vehiculo.categoria === 'Moto') icono = '🏍️';
-      if (vehiculo.categoria === 'Camioneta') icono = '🛻';
-      if (vehiculo.categoria === 'Bus') icono = '🚌';
-    }
-
-    div.innerHTML = `
-      <span class="num-cochera">A-${i}</span>
-      <span class="auto-icono">${vehiculo ? icono : '🅿️'}</span>
-      <span class="patente-label">${vehiculo ? vehiculo.patente : 'LIBRE'}</span>
-    `;
-
-    if (i <= 5) {
-      zonaA.appendChild(div);
-    } else {
-      zonaB.appendChild(div);
-    }
+    div.className = `cochera ${vehiculo ? 'ocupada' : 'libre'}`;
+    div.innerText = vehiculo ? `N°${i}\n${vehiculo.patente}` : `N°${i}\nLibre`;
+    contenedor.appendChild(div);
   }
 
-  // Actualizar estadísticas y gráfico circular
-  const libres = TOTAL_COCHERAS - vehículosEstacionados.length;
-  const ocupados = vehículosEstacionados.length;
-  const porcentaje = Math.round((ocupados / TOTAL_COCHERAS) * 100);
-
-  libresEl.innerText = libres;
-  document.getElementById('stat-libres').innerText = libres;
-  document.getElementById('stat-ocupados').innerText = ocupados;
-  document.getElementById('porcentaje-ocupacion').innerText = `${porcentaje}%`;
-
-  // Actualizar Donut Chart CSS
-  const chart = document.getElementById('chart-ocupacion');
-  const grados = (porcentaje / 100) * 360;
-  chart.style.background = `conic-gradient(#ff3344 0deg ${grados}deg, #1e293b ${grados}deg 360deg)`;
+  if (libresEl) {
+    libresEl.innerText = TOTAL_COCHERAS - vehículosEstacionados.length;
+  }
 }
 
-// Evento Ingreso
+// Evento de Ingreso de Vehículo
 document.getElementById('form-ingreso').addEventListener('submit', (e) => {
   e.preventDefault();
+
   if (vehículosEstacionados.length >= TOTAL_COCHERAS) {
     alert('Estacionamiento lleno');
     return;
   }
 
-  const patente = document.getElementById('patente').value.toUpperCase();
-  const categoria = document.getElementById('categoria').value;
+  const patenteInput = document.getElementById('patente');
+  const categoriaInput = document.getElementById('categoria');
+  
+  const patente = patenteInput.value.trim().toUpperCase();
+  const categoria = categoriaInput.value;
+
+  if (vehículosEstacionados.some(v => v.patente === patente)) {
+    alert('Esa patente ya se encuentra registrada en el estacionamiento.');
+    return;
+  }
+
   const folio = 'FOL-' + Math.floor(100000 + Math.random() * 900000);
   const posicion = Array.from({length: TOTAL_COCHERAS}, (_, i) => i + 1)
                         .find(pos => !vehículosEstacionados.some(v => v.posicion === pos));
@@ -111,19 +93,20 @@ document.getElementById('form-ingreso').addEventListener('submit', (e) => {
   vehículosEstacionados.push(nuevoIngreso);
   accionarBarrera();
   
-  alert(`Ticket Generado:\nFolio: ${folio}\nCochera: N°A-${posicion}`);
-  document.getElementById('form-ingreso').reset();
-  renderizarPlano2D();
+  alert(`Ticket Generado:\n\nFolio: ${folio}\nPatente: ${patente}\nCochera: N°${posicion}`);
+  
+  patenteInput.value = '';
+  renderizarCocheras();
 });
 
-// Evento Salida
+// Evento de Salida y Cobro
 document.getElementById('form-salida').addEventListener('submit', (e) => {
   e.preventDefault();
-  const busqueda = document.getElementById('buscar-ticket').value.toUpperCase();
+  const busqueda = document.getElementById('buscar-ticket').value.trim().toUpperCase();
   const index = vehículosEstacionados.findIndex(v => v.folio === busqueda || v.patente === busqueda);
 
   if (index === -1) {
-    alert('Vehículo no encontrado');
+    alert('Vehículo no encontrado. Verifique la patente o el folio.');
     return;
   }
 
@@ -134,20 +117,26 @@ document.getElementById('form-salida').addEventListener('submit', (e) => {
   const total = (minutos / 60 * tarifaPorHora).toFixed(2);
 
   document.getElementById('detalle-cobro').innerHTML = `
-    <h4>COMPROBANTE DE PAGO</h4>
+    <h3>COMPROBANTE DE PAGO</h3>
     <p><strong>Folio:</strong> ${vehiculo.folio}</p>
     <p><strong>Patente:</strong> ${vehiculo.patente}</p>
-    <p><strong>Total:</strong> $${total}</p>
-    <button onclick="finalizarSalida(${index})" style="width:100%;">Confirmar Pago</button>
+    <p><strong>Categoría:</strong> ${vehiculo.categoria}</p>
+    <p><strong>Entrada:</strong> ${new Date(vehiculo.horaEntrada).toLocaleTimeString()}</p>
+    <p><strong>Salida:</strong> ${horaSalida.toLocaleTimeString()}</p>
+    <p><strong>Total a Pagar:</strong> $${total}</p>
+    <button onclick="finalizarSalida(${index})" style="width:100%;">Confirmar Pago y Abrir Barrera</button>
   `;
 });
 
+// Finalizar cobro y liberar espacio
 function finalizarSalida(index) {
   accionarBarrera();
   vehículosEstacionados.splice(index, 1);
   document.getElementById('detalle-cobro').innerHTML = '';
   document.getElementById('form-salida').reset();
-  renderizarPlano2D();
+  renderizarCocheras();
+  alert('Pago realizado. Cochera liberada y barrera abierta.');
 }
 
-renderizarPlano2D();
+// Inicializar vista al cargar la página
+renderizarCocheras();
