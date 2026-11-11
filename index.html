@@ -3,19 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Control de Estacionamiento</title>
+  <title>Sistema de Control y Monitoreo de Estacionamiento</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header>
-    <h1>Control de Estacionamiento</h1>
+    <div class="brand">
+      <h1>MONITOREO DE ESTACIONAMIENTO</h1>
+      <span class="subtext">Sistema de Control 2D en Tiempo Real</span>
+    </div>
     <div id="pantalla-led" class="led-panel">
-      <span>DISPONIBLES: <strong id="cupos-libres">10</strong></span>
+      <span>DISPONIBLES: <strong id="cupos-libres">10</strong> / 10</span>
     </div>
   </header>
 
   <main class="grid-container">
-    <!-- Tótem de Entrada y Barrera -->
+    <!-- Panel Izquierdo: Tótem e Ingreso -->
     <section class="card">
       <h2>Tótem de Entrada (Ingreso)</h2>
       
@@ -39,23 +42,85 @@
 
         <button type="submit">Generar Ticket e Ingresar</button>
       </form>
-    </section>
 
-    <!-- Mapa de Cocheras -->
-    <section class="card">
-      <h2>Mapa de Cocheras</h2>
-      <div id="mapa-cocheras" class="cocheras-grid"></div>
-    </section>
+      <hr class="divider">
 
-    <!-- Caja y Salida -->
-    <section class="card">
       <h2>Caja y Salida</h2>
       <form id="form-salida">
         <label>Buscar por Folio o Patente:</label>
         <input type="text" id="buscar-ticket" placeholder="Ingrese Folio o Patente" required>
-        <button type="submit">Calcular Tarifa</button>
+        <button type="submit" class="btn-salida">Calcular Tarifa</button>
       </form>
       <div id="detalle-cobro" class="comprobante"></div>
+    </section>
+
+    <!-- Panel Central: Plano 2D Vista Superior -->
+    <section class="card plano-card">
+      <div class="plano-header">
+        <h2>Diagrama del Lugar (Vista Superior)</h2>
+        <div class="leyenda">
+          <span class="dot libre"></span> Libre
+          <span class="dot ocupado"></span> Ocupado
+        </div>
+      </div>
+
+      <!-- Diagrama de Estacionamiento Vista Aérea -->
+      <div class="plano-blueprint">
+        <!-- Carril Superior de Tráfico -->
+        <div class="carril carril-top">
+          <span class="flecha">➔ ENTRADA</span>
+          <span class="flecha">➔ CIRCULACIÓN NORTE</span>
+        </div>
+
+        <!-- Zona A de Cocheras -->
+        <div class="zona-label">ZONA A (Cocheras 1 a 5)</div>
+        <div id="zona-a" class="fila-cocheras"></div>
+
+        <!-- Calle Central de Maniobras -->
+        <div class="calle-central">
+          <div class="linea-discontinua"></div>
+          <span>ZONA DE MANIOBRAS</span>
+          <div class="linea-discontinua"></div>
+        </div>
+
+        <!-- Zona B de Cocheras -->
+        <div id="zona-b" class="fila-cocheras"></div>
+        <div class="zona-label">ZONA B (Cocheras 6 a 10)</div>
+
+        <!-- Carril Inferior de Salida -->
+        <div class="carril carril-bottom">
+          <span class="flecha">➔ CIRCULACIÓN SUR</span>
+          <span class="flecha">SALIDA ➔</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel Derecho: Estadísticas en Vivo -->
+    <section class="card stats-card">
+      <h2>Estadísticas en Vivo</h2>
+      <div class="donut-chart-box">
+        <div class="donut-chart" id="chart-ocupacion">
+          <div class="donut-inner">
+            <span id="porcentaje-ocupacion">0%</span>
+            <small>Ocupado</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-info">
+        <div class="stat-item">
+          <span>Capacidad Total:</span>
+          <strong>10 Espacios</strong>
+        </div>
+        <div class="stat-item">
+          <span>Espacios Ocupados:</span>
+          <strong id="stat-ocupados" style="color: #ff3344;">0</strong>
+        </div>
+        <div class="stat-item">
+          <span>Espacios Libres:</span>
+          <strong id="stat-libres" style="color: #00ff66;">10</strong>
+        </div>
+      </div>
     </section>
   </main>
 
