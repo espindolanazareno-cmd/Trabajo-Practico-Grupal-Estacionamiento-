@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movimientos - Control de Estacionamiento</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Movimientos</h1>
+    <nav class="menu">
+      <a href="index.html">Playa</a>
+      <a href="abonados.html">Abonados mensuales</a>
+      <a href="movimientos.html" class="activo">Movimientos</a>
+      <a href="tarifas.html">Tarifas</a>
+    </nav>
+  </header>
+
+  <div id="mensaje" class="mensaje" style="margin-top:20px;"></div>
+
+  <main class="grid-container">
+    <section class="card card-ancha">
+      <h2>Movimientos y Cobranza</h2>
+      <form id="form-filtros" class="filtros">
+        <label for="f-desde">Desde</label>
+        <input type="date" id="f-desde">
+        <label for="f-hasta">Hasta</label>
+        <input type="date" id="f-hasta">
+        <input type="search" id="f-patente" placeholder="Patente">
+        <select id="f-tipo">
+          <option value="">Todos los movimientos</option>
+          <option value="entrada">Sólo entradas</option>
+          <option value="salida">Sólo salidas</option>
+          <option value="pago">Sólo pagos mensuales</option>
+        </select>
+        <select id="f-cliente">
+          <option value="">Todos los clientes</option>
+          <option value="hora">Por hora</option>
+          <option value="abonado">Abonados</option>
+        </select>
+        <button type="submit">Filtrar</button>
+        <button type="button" id="btn-hoy" class="secundario">Cobranza de hoy</button>
+      </form>
+
+      <div class="resumen">
+        <div class="led-panel">ENTRADAS: <strong id="r-entradas">0</strong></div>
+        <div class="led-panel">SALIDAS: <strong id="r-salidas">0</strong></div>
+        <div class="led-panel">ABONADOS: <strong id="r-abonados">0</strong></div>
+        <div class="led-panel">ESTADÍAS: <strong id="r-estadias">$0</strong></div>
+        <div class="led-panel">MENSUALES: <strong id="r-mensuales">$0</strong></div>
+        <div class="led-panel">TOTAL COBRADO: <strong id="r-recaudado">$0</strong></div>
+      </div>
+
+      <div class="tabla-scroll">
+        <table class="tabla" id="tabla-movimientos">
+          <thead>
+            <tr>
+              <th>Fecha y hora</th><th>Tipo</th><th>Patente</th><th>Categoría</th><th>Cochera</th>
+              <th>Folio</th><th>Cliente</th><th>Minutos</th><th>Cobrado</th><th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/movimientos.js"></script>
+</body>
+</html>
