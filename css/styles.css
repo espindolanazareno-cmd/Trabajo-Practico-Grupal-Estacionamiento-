@@ -228,9 +228,194 @@ button:hover {
   box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
 
+.comprobante:empty {
+  display: none;
+}
+
 .comprobante h3 {
   margin-top: 0;
   text-align: center;
   border-bottom: 2px dashed #000;
   padding-bottom: 8px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+header {
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Menú de navegación entre módulos */
+.menu {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.menu a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: #0f172a;
+}
+
+.menu a:hover,
+.menu a.activo {
+  background-color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+}
+
+/* Módulos de abonados y movimientos */
+.card-ancha {
+  grid-column: 1 / -1;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.form-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+button.secundario {
+  background-color: #475569;
+}
+
+button.secundario:hover {
+  background-color: #334155;
+}
+
+button.peligro {
+  background-color: #dc2626;
+}
+
+button.peligro:hover {
+  background-color: #b91c1c;
+}
+
+button.chico {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+.filtros {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tabla-scroll {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tabla th,
+.tabla td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tabla th {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.tabla tbody tr:hover {
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+.tabla tr.seleccionado {
+  background-color: rgba(59, 130, 246, 0.18);
+}
+
+.tabla .vacio {
+  text-align: center;
+  color: #94a3b8;
+  padding: 20px;
+}
+
+.estado {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.estado.ok {
+  background-color: rgba(0, 255, 102, 0.12);
+  color: var(--led-green);
+}
+
+.estado.deuda {
+  background-color: rgba(255, 51, 68, 0.15);
+  color: var(--led-red);
+}
+
+.estado.neutro {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+}
+
+.resumen {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.resumen .led-panel {
+  font-size: 1rem;
+  padding: 10px 18px;
+}
+
+.mensaje {
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.mensaje:empty {
+  display: none;
+}
+
+.mensaje.error {
+  background-color: rgba(255, 51, 68, 0.15);
+  color: #fecaca;
+  border: 1px solid var(--led-red);
+}
+
+.mensaje.exito {
+  background-color: rgba(0, 255, 102, 0.1);
+  color: #bbf7d0;
+  border: 1px solid #14532d;
 }
