@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Uso - Control de Estacionamiento</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .manual-seccion h3 {
+      color: #3b82f6;
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+    .manual-lista {
+      padding-left: 20px;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+    .manual-lista li {
+      margin-bottom: 8px;
+    }
+    .badge-rol {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background-color: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+    .regla-box {
+      background-color: #0f172a;
+      border-left: 4px solid #00ff66;
+      padding: 12px 15px;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Manual de Uso del Sistema</h1>
+    <nav class="menu">
+      <a href="index.html">Playa</a>
+      <a href="abonados.html">Abonados mensuales</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="tarifas.html">Tarifas</a>
+      <a href="manual.html" class="activo">Manual de uso</a>
+    </nav>
+  </header>
+
+  <main class="grid-container">
+    <!-- Módulo 1: Playa -->
+    <section class="card manual-seccion">
+      <h2>1. Control de Playa (Ingreso y Salida)</h2>
+      <p><span class="badge-rol">Operador de Cabina</span></p>
+      
+      <h3>Ingreso de Vehículos</h3>
+      <ol class="manual-lista">
+        <li>En el <strong>Tótem de Entrada</strong>, escriba la patente del vehículo (sin espacios ni guiones) y seleccione la categoría (<em>Moto, Auto, Camioneta o Bus</em>).</li>
+        <li>Presione <strong>Generar Ticket e Ingresar</strong>.</li>
+        <li>El sistema asignará automáticamente la primera cochera libre (en color <strong>rojo</strong> en el mapa), emitirá el comprobante con número de <strong>Folio</strong> y accionará la barrera de entrada.</li>
+        <li>Si la patente pertenece a un <strong>Abonado mensual al día</strong>, el sistema lo detectará automáticamente y lo marcará sin cargo.</li>
+      </ol>
+
+      <h3>Egreso y Cobro</h3>
+      <ol class="manual-lista">
+        <li>En <strong>Caja y Salida</strong>, ingrese la patente o el número de folio del ticket (ej. <code>FOL-123456</code>) y haga clic en <strong>Calcular Tarifa</strong>.</li>
+        <li>Verifique el tiempo transcurrido y el monto calculado en el comprobante.</li>
+        <li>Presione <strong>Confirmar Pago y Abrir Barrera</strong> para registrar el cobro y liberar la cochera en color <strong>verde</strong>.</li>
+      </ol>
+    </section>
+
+    <!-- Módulo 2: Abonados Mensuales -->
+    <section class="card manual-seccion">
+      <h2>2. Gestión de Abonados Mensuales</h2>
+      <p><span class="badge-rol">Administración</span></p>
+
+      <h3>Alta y Edición de Clientes</h3>
+      <ol class="manual-lista">
+        <li>Complete el formulario <strong>Alta de Abonado</strong> con patente, categoría, datos del titular, monto mensual y día de vencimiento.</li>
+        <li>Use los filtros superiores para buscar por patente/nombre o filtrar clientes <strong>Al día</strong> vs. <strong>Adeuda</strong>.</li>
+        <li>Desde la columna de acciones puede editar datos, suspender o dar de baja un abono conservando su historial.</li>
+      </ol>
+
+      <h3>Registro de Cuotas</h3>
+      <ol class="manual-lista">
+        <li>Haga clic en el botón <strong>Pagos</strong> sobre la fila del abonado deseado.</li>
+        <li>En el panel derecho, seleccione el período (ej. <code>2026-11</code>), el medio de pago y opcionalmente un número de comprobante.</li>
+        <li>Al registrar el pago, el estado del cliente pasará a <strong>Al día</strong> y sus estadías en la playa serán gratuitas durante ese mes.</li>
+      </ol>
+    </section>
+
+    <!-- Módulo 3: Movimientos y Caja -->
+    <section class="card manual-seccion">
+      <h2>3. Movimientos y Arqueo de Caja</h2>
+      <p><span class="badge-rol">Supervisión / Caja</span></p>
+
+      <ul class="manual-lista">
+        <li><strong>Resumen Superior:</strong> Muestra en tiempo real la cantidad de entradas, salidas, ingresos de abonados y el total recaudado dividido entre <em>Estadías por hora</em> y <em>Abonos mensuales</em>.</li>
+        <li><strong>Cobranza del Día:</strong> Presione el botón <strong>Hoy</strong> en la barra de filtros para obtener el cierre de caja de la jornada actual.</li>
+        <li><strong>Filtros Avanzados:</strong> Permite auditar el historial por rango de fechas, patente específica, tipo de movimiento (<em>Entrada, Salida, Pago mensual</em>) o tipo de cliente.</li>
+      </ul>
+    </section>
+
+    <!-- Módulo 4: Tarifas y Reglas de Cobro -->
+    <section class="card manual-seccion">
+      <h2>4. Tarifas y Reglas de Facturación</h2>
+      <p><span class="badge-rol">Configuración</span></p>
+
+      <div class="regla-box">
+        <strong>Criterio de Cobro por Hora:</strong><br>
+        • La <strong>primera hora</strong> se cobra completa aunque la estadía dure menos de 60 minutos.<br>
+        • Pasada la primera hora, se suman las horas completas más cada <strong>fracción de 15 minutos</strong> (o parte).<br>
+        • Las fracciones acumuladas dentro de una misma hora nunca superan el valor de una hora completa.
+      </div>
+
+      <ul class="manual-lista">
+        <li><strong>Simulador de Estadía:</strong> Permite cotizar cualquier cantidad de minutos por categoría antes de efectuar un cobro.</li>
+        <li><strong>Modificar Precios:</strong> Edite los valores de hora, fracción o abono mensual en la tabla derecha y presione <strong>Guardar Precios</strong> para aplicarlos al instante en todo el sistema.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
