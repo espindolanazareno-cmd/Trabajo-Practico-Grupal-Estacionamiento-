@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abonados Mensuales - Control de Estacionamiento</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Abonados Mensuales</h1>
+    <nav class="menu">
+      <a href="index.html">Playa</a>
+      <a href="abonados.html" class="activo">Abonados mensuales</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="tarifas.html">Tarifas</a>
+    </nav>
+    <div class="led-panel">
+      <span>AL DÍA: <strong id="total-al-dia">0</strong> / <strong id="total-activos">0</strong></span>
+    </div>
+  </header>
+
+  <div id="mensaje" class="mensaje" style="margin-top:20px;"></div>
+
+  <main class="grid-container">
+    <!-- Alta / Edición -->
+    <section class="card">
+      <h2 id="titulo-form">Alta de Abonado</h2>
+      <form id="form-abonado">
+        <input type="hidden" id="abonado-id">
+        <div class="form-grid">
+          <div>
+            <label for="ab-patente">Patente / Dominio:</label>
+            <input type="text" id="ab-patente" placeholder="AA123CD" maxlength="10" required>
+          </div>
+          <div>
+            <label for="ab-categoria">Categoría:</label>
+            <select id="ab-categoria">
+              <option value="Moto">Moto</option>
+              <option value="Auto" selected>Auto</option>
+              <option value="Camioneta">Camioneta / SUV</option>
+              <option value="Bus">Bus</option>
+            </select>
+          </div>
+          <div>
+            <label for="ab-titular">Titular:</label>
+            <input type="text" id="ab-titular" maxlength="120" required>
+          </div>
+          <div>
+            <label for="ab-documento">DNI / CUIT:</label>
+            <input type="text" id="ab-documento" maxlength="20">
+          </div>
+          <div>
+            <label for="ab-telefono">Teléfono:</label>
+            <input type="tel" id="ab-telefono" maxlength="30">
+          </div>
+          <div>
+            <label for="ab-email">Email:</label>
+            <input type="email" id="ab-email" maxlength="120">
+          </div>
+          <div>
+            <label for="ab-monto">Monto mensual ($):</label>
+            <input type="number" id="ab-monto" min="1" step="0.01" required>
+          </div>
+          <div>
+            <label for="ab-vencimiento">Vence el día:</label>
+            <input type="number" id="ab-vencimiento" min="1" max="28" value="10" required>
+          </div>
+          <div>
+            <label for="ab-estado">Estado:</label>
+            <select id="ab-estado">
+              <option value="activo">Activo</option>
+              <option value="suspendido">Suspendido</option>
+            </select>
+          </div>
+        </div>
+        <label for="ab-observaciones">Observaciones:</label>
+        <input type="text" id="ab-observaciones" maxlength="255">
+        <div class="acciones">
+          <button type="submit" id="btn-guardar">Dar de Alta</button>
+          <button type="button" id="btn-cancelar" class="secundario" hidden>Cancelar edición</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Pagos del abonado seleccionado -->
+    <section class="card">
+      <h2>Registro de Pagos</h2>
+      <p id="pago-abonado-sel">Seleccione un abonado del listado (botón "Pagos").</p>
+      <form id="form-pago" hidden>
+        <div class="form-grid">
+          <div>
+            <label for="pago-periodo">Período:</label>
+            <input type="month" id="pago-periodo" required>
+          </div>
+          <div>
+            <label for="pago-monto">Monto ($):</label>
+            <input type="number" id="pago-monto" min="1" step="0.01" required>
+          </div>
+          <div>
+            <label for="pago-medio">Medio de pago:</label>
+            <select id="pago-medio">
+              <option value="efectivo">Efectivo</option>
+              <option value="debito">Tarjeta de débito</option>
+              <option value="credito">Tarjeta de crédito</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="mercadopago">Mercado Pago</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label for="pago-comprobante">N° comprobante:</label>
+            <input type="text" id="pago-comprobante" maxlength="40">
+          </div>
+        </div>
+        <button type="submit">Registrar Pago</button>
+      </form>
+
+      <div class="tabla-scroll">
+        <table class="tabla" id="tabla-pagos" hidden>
+          <thead>
+            <tr><th>Período</th><th>Monto</th><th>Fecha</th><th>Medio</th><th>Comprob.</th><th></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Listado -->
+    <section class="card card-ancha">
+      <h2>Listado de Abonados</h2>
+      <div class="filtros">
+        <input type="search" id="filtro-q" placeholder="Buscar patente, titular o DNI">
+        <select id="filtro-estado">
+          <option value="vigentes">Vigentes (sin bajas)</option>
+          <option value="activo">Activos</option>
+          <option value="suspendido">Suspendidos</option>
+          <option value="baja">Dados de baja</option>
+          <option value="todos">Todos</option>
+        </select>
+        <select id="filtro-deuda">
+          <option value="">Al día y con deuda</option>
+          <option value="1">Sólo al día</option>
+          <option value="0">Sólo con deuda</option>
+        </select>
+      </div>
+      <div class="tabla-scroll">
+        <table class="tabla" id="tabla-abonados">
+          <thead>
+            <tr>
+              <th>Patente</th><th>Titular</th><th>Contacto</th><th>Categoría</th>
+              <th>Mensual</th><th>Vence</th><th>Último período</th><th>Estado</th><th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Movimientos del abonado seleccionado -->
+    <section class="card card-ancha" id="seccion-mov-abonado" hidden>
+      <h2>Últimos Movimientos del Abonado</h2>
+      <div class="tabla-scroll">
+        <table class="tabla" id="tabla-mov-abonado">
+          <thead>
+            <tr><th>Fecha y hora</th><th>Tipo</th><th>Cochera</th><th>Folio</th><th>Condición</th><th>Monto</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/abonados.js"></script>
+</body>
+</html>
