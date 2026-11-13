@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarifas - Control de Estacionamiento</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Tarifas</h1>
+    <nav class="menu">
+      <a href="index.html">Playa</a>
+      <a href="abonados.html">Abonados mensuales</a>
+      <a href="movimientos.html">Movimientos</a>
+      <a href="tarifas.html" class="activo">Tarifas</a>
+    </nav>
+  </header>
+
+  <div id="mensaje" class="mensaje" style="margin-top:20px;"></div>
+
+  <main class="grid-container">
+    <section class="card card-ancha">
+      <h2>Lista de Precios</h2>
+      <div class="tabla-scroll">
+        <table class="tabla" id="tabla-tarifas">
+          <thead>
+            <tr><th>Categoría</th><th>Por hora</th><th>Fracción de 15 min</th><th>Abono mensual</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p>
+        <strong>Estadía por hora:</strong> la primera hora se cobra completa aunque la estadía sea menor.
+        Pasada la primera hora, se cobran las horas completas y cada fracción de 15 minutos (o parte)
+        al precio de fracción. Las fracciones de una misma hora nunca superan el precio de la hora.
+      </p>
+      <p><strong>Abonados mensuales al día:</strong> no abonan las estadías.</p>
+    </section>
+
+    <section class="card">
+      <h2>Calcular Estadía</h2>
+      <form id="form-simulador">
+        <label for="sim-categoria">Categoría:</label>
+        <select id="sim-categoria"></select>
+        <label for="sim-minutos">Tiempo de estadía (minutos):</label>
+        <input type="number" id="sim-minutos" min="1" value="80" required>
+        <button type="submit">Calcular</button>
+      </form>
+      <div id="sim-resultado" class="comprobante"></div>
+    </section>
+
+    <section class="card">
+      <h2>Modificar Precios</h2>
+      <form id="form-tarifas">
+        <div class="tabla-scroll">
+          <table class="tabla" id="tabla-editar">
+            <thead>
+              <tr><th>Categoría</th><th>Hora ($)</th><th>Fracción ($)</th><th>Mensual ($)</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <button type="submit">Guardar Precios</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/tarifas.js"></script>
+</body>
+</html>
