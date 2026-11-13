@@ -437,3 +437,13 @@ function periodoActual() {
   const hoy = new Date();
   return `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}`;
 }
+// Agrega automáticamente el enlace al Manual de uso en el menú de todas las páginas
+document.addEventListener('DOMContentLoaded', () => {
+  const menu = document.querySelector('nav.menu');
+  if (menu && !menu.querySelector('a[href="manual.html"]')) {
+    const enlace = document.createElement('a');
+    enlace.href = 'manual.html';
+    enlace.textContent = 'Manual de uso';
+    menu.appendChild(enlace);
+  }
+});
